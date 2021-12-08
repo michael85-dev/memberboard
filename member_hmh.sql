@@ -1,5 +1,5 @@
 select user();
-use study_member;
+use member_hmh;
 
 select database();
 
@@ -11,7 +11,7 @@ create table member_table (
     m_name varchar(20),
     m_email varchar(40),
     m_phone varchar(20),
-    m_photo varchar(50),
+    m_photoname varchar(50),
     constraint primary key(m_number)
 );
 
@@ -23,7 +23,7 @@ create table board_table (
     b_title varchar(100),
     b_writer varchar(30),
     b_contents varchar(1000),
-    b_hits int,
+    b_hits int default 0,
     b_date timestamp not null default current_timestamp,
     b_filename varchar(100),
     constraint primary key(b_number)

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,27 +7,38 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>새글 작성 페이지(save.jsp)</h2>
+	<h2>update.jsp</h2>
+	<div>
+			<h2>새글 작성 페이지(save.jsp)</h2>
 	로그인 아이디 : ${sessionScope.loginId}
-	<form action="/board/save" method="post">
-		작성자 : <input type="text" name="b_writer" value="${sessionScope.loginId}"> <br>
+	<form action="/board/update" method="post">
+		<input type="hidden" name="page">
+		<input type="hidden" name="b_number">
+		작성자 : <input type="text" name="b_writer" value="${sessionScope.loginId}" readonly> <br>
 		비밀번호 : <input type="password" name="b_password" id="pw" placeholder="비밀번호" onblur="pCheck()">
 		<span id="pCheck"></span> <br>
 		글 제목 : <input type="text" name="b_title"> <br>
 		글 내용 : <textarea name="b_contents" rows="5"></textarea> <br>
 		파일 첨부 : <input type="file" name="b_file"> <br>
-		<input type="submit" value="작성">
+		<input type="button" value="수정" onclick="pCheck()">
 	</form>
+	</div>
 </body>
 <script>
 	function pCheck() {
-		const pCheck = document.getElementById('pCheck');
+		// const pCheck = document.getElementById('pCheck');
 		const pw = document.getElementById('pw').value;
-		
-		if (pw == null) {
+		const pwDB = '${bDTO.b_password}';
+		if (pw == pwDB) {
+			pCheck.style.color = 'green';
+			pCheck.innerHTML = '일치';
+			update_form.submit()
+			
+		} else {
 			pCheck.style.color = 'red';
-			pCheck.innerHTML = '1자 이상 적어주세요';
+			pCheck.innerHTML = '불일치';
 		}
 	}
-</script>
+
+</script>	
 </html>
