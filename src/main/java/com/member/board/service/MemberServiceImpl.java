@@ -22,8 +22,12 @@ public class MemberServiceImpl implements MemberService {
 		// 프로필 작업 관련 한 명령어
 		MultipartFile m_photo = mDTO.getM_photo();
 		String m_photoname = m_photo.getOriginalFilename(); // 파일명 중복을 피하기 위해서 파일명 명명
-				
-		m_photoname= System.currentTimeMillis() + "-" + m_photoname;
+		
+		if (!m_photoname.isBlank()) {
+			m_photoname= System.currentTimeMillis() + "-" + m_photoname;
+		} else {
+			m_photoname = null;
+		}
 		System.out.println("m_photoname : " + m_photoname);
 				
 		// 파일 저장
@@ -68,6 +72,37 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDTO detailAjax(long m_number) {
 		// TODO Auto-generated method stub
 		return mr.detailAjax(m_number);
+	}
+
+	@Override
+	public List<MemberDTO> findAll(long m_number) {
+		// TODO Auto-generated method stub
+		return mr.findAll(m_number);
+	}
+
+	@Override
+	public void update(MemberDTO mDTO) throws IllegalStateException, IOException {
+		// TODO Auto-generated method stub
+		MultipartFile m_photo = mDTO.getM_photo();
+		String m_photoname = m_photo.getOriginalFilename(); // 파일명 중복을 피하기 위해서 파일명 명명
+		
+		if (!m_photoname.isBlank()) {
+			m_photoname= System.currentTimeMillis() + "-" + m_photoname;
+		} else {
+			m_photoname = null;
+		}
+		System.out.println("m_photoname : " + m_photoname);
+				
+		// 파일 저장
+		String savePath = "D:\\github\\memberboard\\src\\main\\webapp\\resources\\upload" + m_photoname;
+				
+		if (!m_photo.isEmpty()) {
+			m_photo.transferTo(new File(savePath));
+		} // 파일 저장 과정
+				
+		mDTO.setM_photoname(m_photoname);
+		
+		mr.update(mDTO);
 	}
 
 }

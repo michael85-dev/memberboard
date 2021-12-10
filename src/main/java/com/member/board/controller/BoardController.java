@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.member.board.dto.BoardDTO;
 import com.member.board.dto.CommentDTO;
+import com.member.board.dto.MemberDTO;
 import com.member.board.dto.PageDTO;
 import com.member.board.service.BoardService;
 import com.member.board.service.CommentService;
+import com.member.board.service.MemberService;
 
 @Controller
 @RequestMapping(value="/board/*")
@@ -24,6 +26,7 @@ public class BoardController {
 	private BoardService bs;
 	@Autowired
 	private CommentService cs;
+
 	
 	@RequestMapping(value="saveform", method=RequestMethod.GET)
 	public String saveForm() {
@@ -42,21 +45,36 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="findAll", method=RequestMethod.GET)
-	public String findAll(Model model) {
+	public String findAll(Model model, @ModelAttribute CommentDTO cDTO) {
 		System.out.println("findAll,jsp 호출됨");
 		List<BoardDTO> bList = bs.findAll();
 		model.addAttribute("bList", bList);
+		// requestParam 은 폼테그 또는 주소에서 값을 정해서 넘기는 방식으로 해야함
+		// 다음 방식에서는 findAll을 호출하는 과정에서 b_number에 대한 값이 없기 때문에 b_number 가 없다는 요청이 뜸.
+		
+		// 해당 cList는 1개의 값만을 가지고 옴
+		List<CommentDTO> cList = cs.count(cDTO.getB_number()); // paging list를 가져올때 
+		System.out.println("cDTO.getB_number : " + cDTO.getB_number());
+		model.addAttribute("cList", cList);
+		// 목록을 뿌릴때 댓글수를 가지고 오게?
+		// 목록을 뷰잉할때 댓글 수를 알아서 카운트 하게 해서 가지고 오게하면 해당 댓글에 대해서 문제가 없음.
 		
 		return "board/findAll";
 	}
 	
 	@RequestMapping(value="detail", method=RequestMethod.GET) // comment, page 처리 미완
-	public String detail(@RequestParam("b_number") long b_number, Model model,   @RequestParam(value="page", required=false, defaultValue="1")int page) {
+	public String detail(@RequestParam("b_number") long b_number, Model model, @RequestParam(value="page", required=false, defaultValue="1")int page) {
 		BoardDTO bDTO = bs.detail(b_number);
 		model.addAttribute("bDTO", bDTO);
 		model.addAttribute("page", page);
+		
+//		@RequestParam("m_number") long m_number,  
+		//MemberDTO mDTO = ms.detailAjax(m_number);
+//		model.addAttribute("mDTO", mDTO);
+				
 		List<CommentDTO> cList = cs.findAll(b_number);
 		model.addAttribute("cList", cList);
+		
 		
 		return"board/detail";
 	}
@@ -67,12 +85,13 @@ public class BoardController {
 		BoardDTO bDTO = bs.detail(b_number);
 		model.addAttribute("bDTO", bDTO);
 		model.addAttribute("page", page);
+	
 			
 		return "board/update";
 	}
 	
 	@RequestMapping(value="update", method=RequestMethod.POST)
-	public String update(@ModelAttribute BoardDTO bDTO, Model model, @RequestParam(value="page", required=false, defaultValue="1")int page) {
+	public String update(@ModelAttribute BoardDTO bDTO, Model model, @RequestParam(value="page", required=false, defaultValue="1")int page) throws IllegalStateException, IOException {
 		model.addAttribute("page", page);
 		bs.update(bDTO);
 		

@@ -17,4 +17,8 @@ public interface MemberService {
 
 	MemberDTO detailAjax(long m_number);
 
+	List<MemberDTO> findAll(long m_number);
+
+	void update(MemberDTO mDTO) throws IllegalStateException, IOException;
+
 }

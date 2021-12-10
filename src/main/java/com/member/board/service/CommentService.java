@@ -10,4 +10,6 @@ public interface CommentService {
 
 	List<CommentDTO> findAll(long b_number);
 
+	List<CommentDTO> count(long b_number);
+
 }

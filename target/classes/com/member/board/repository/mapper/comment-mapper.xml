@@ -10,4 +10,7 @@
  	<select id="findAll" parameterType="long" resultType="cDTO">
  		select * from comment_table where b_number = #{b_number}
  	</select>
+ 	<select id="count" resultType="int" parameterType="long">
+ 		select count(c_number) from comment_table where b_number = #{b_number}
+ 	</select>
  </mapper> 

@@ -21,6 +21,7 @@ drop table board_table;
 create table board_table (
 	b_number bigint auto_increment,
     b_title varchar(100),
+    b_password varchar(50),
     b_writer varchar(30),
     b_contents varchar(1000),
     b_hits int default 0,
@@ -37,8 +38,12 @@ create table comment_table (
     b_number bigint,
     c_writer varchar(50),
     c_contents varchar(200),
+    c_count int,
     c_date timestamp not null default current_timestamp,
     constraint primary key(c_number)
 );
 
+alter table comment_table add c_count int null; -- 컬럼 추가
 select * from comment_table;
+
+select count(c_number) from comment_table where b_number = 1;

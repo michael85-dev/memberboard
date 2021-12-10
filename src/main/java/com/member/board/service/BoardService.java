@@ -14,7 +14,7 @@ public interface BoardService{
 
 	BoardDTO detail(long b_number);
 
-	void update(BoardDTO bDTO);
+	void update(BoardDTO bDTO) throws IllegalStateException, IOException;
 
 	void delete(long b_number);
 

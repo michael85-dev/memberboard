@@ -33,12 +33,28 @@
 			}
 		});
 		
-	}
+	}/* 
+	function checkId() {
+		const id = document.getElementById('m_id').value;
+		
+		const idCheck = document.getElementById('checkId');
+		const idDB = '${mDTO.m_id}';
+		
+		if (id = idDB) {
+			idCheck.style.color = 'green';
+			idCheck.innerHTML = '사용 가능';
+		} else {
+			idCheck.style.color = 'red';
+			idCheck.innerHTML = '사용 불가능';
+		}		
+	} */
+
+	
 </script>
 </head>
 <body>
 	<h2>회원가입 페이지(insert.jsp)</h2>
-	<form action="/member/insert" method="post">
+	<form action="/member/insert" method="post" enctype="multipart/form-data">
 		아이디 : <input type="text" name="m_id" id="m_id" onblur="checkId()" onkeyup="idDuplicate()" placeholder="20자 미만 입력..">
 		<span id="checkId"></span> <br>
 		비밀번호 : <input type="password" name="m_password" id="m_password" onblur="checkPwd()" placeholder="특문, 대문 입력 필수">
@@ -46,7 +62,7 @@
 		이름 : <input type="text" name="m_name"> <br>
 		이메일 : <input type="text" name="m_email" id="m_mail" onblur="email()"> <br>
 		전화번호 : <input type="text" name="m_phone" placeholder="000-0000-0000"> <br>
-		프로필사진 : <input type="file" name="m_photo" id="imageFile" accept="image/*">
+		프로필사진 : <input type="file" name="m_photo">
 		<input type="submit" value="회원가입">
 	</form>
 </body>

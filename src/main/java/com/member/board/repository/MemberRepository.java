@@ -38,4 +38,14 @@ public class MemberRepository {
 		return sql.selectOne("Member.detailAjax", m_number);
 	}
 
+	public List<MemberDTO> findAll(long m_number) {
+		// TODO Auto-generated method stub
+		return sql.selectList("Member.check", m_number);
+	}
+
+	public void update(MemberDTO mDTO) {
+		// TODO Auto-generated method stub
+		sql.selectOne("Member.update", mDTO);
+	}
+
 }

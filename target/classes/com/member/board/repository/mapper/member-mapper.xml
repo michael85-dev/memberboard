@@ -4,8 +4,8 @@
  
  <mapper namespace="Member"> 
  	<insert id="insert" parameterType="mDTO">
- 		insert into member_table (m_id, m_password, m_name, m_email, m_phone, m_photoname)
- 			values (#{m_id}, #{m_password}, #{m_name}, #{m_email}, #{m_phone}, #{m_photoname})
+ 		insert into member_table (m_id, m_password, m_name, m_email, m_photoname)
+ 			values (#{m_id}, #{m_password}, #{m_name}, #{m_email}, #{m_photoname})
  	</insert>
  	<select id="idDuplicate" parameterType="String" resultType="String">
  		select m_id from member_table where m_id = #{m_id}
@@ -18,6 +18,12 @@
  	</select>
  	<select id="detailAjax" parameterType="long">
  		select * from member_table where m_number = #{m_number}
+ 	</select>
+ 	<select id="check" parameterType="long" resultType="mDTO">
+ 		select m_id from member_table where m_number = #{m_number}
+ 	</select>
+ 	<select id="update" parameterType="mDTO">
+ 		update member_table set m_email = #{m_email}, m_phone = #{m_phone}, m_photoname = #{m_photoname}
  	</select>
  </mapper>
  

@@ -54,8 +54,23 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void update(BoardDTO bDTO) {
+	public void update(BoardDTO bDTO) throws IllegalStateException, IOException {
 		// TODO Auto-generated method stub
+		MultipartFile b_file = bDTO.getB_file();
+		String b_filename = b_file.getOriginalFilename();
+		
+		b_filename = System.currentTimeMillis() + "-" + b_filename;
+		System.out.println("b_filename : " + b_filename);
+		
+		//파일 저장
+		String savePath = "D:\\github\\memberboard\\src\\main\\webapp\\resources\\upload" + b_filename;
+		
+		if (!b_file.isEmpty()) {
+			b_file.transferTo(new File(savePath));
+		}
+		
+		bDTO.setB_filename(b_filename);
+		
 		br.update(bDTO);
 	}
 
@@ -66,7 +81,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	private static final int PAGE_LIMIT = 3; // 한페이지에 보여질 글 개수 
-	private static final int BLOCK_LIMIT = 3; // 한화면에 보여질 페이지 개수
+	private static final int BLOCK_LIMIT = 5; // 한화면에 보여질 페이지 개수
 
 	@Override
 	public PageDTO paging(int page) {

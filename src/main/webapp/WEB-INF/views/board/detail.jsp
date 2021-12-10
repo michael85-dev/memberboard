@@ -13,6 +13,10 @@
 <body>
 	<h2>detail.jsp</h2>
 	<h3>상세 글 조회</h3>
+	<h4>전체 작성 글 조회</h4>
+	로그인 아이디 : ${sessionScope.loginId} 
+	<button onclick="logout()">로그아웃</button> <br>
+	<a href="/board/findAll">전체 글 조회로 돌아가기</a>
 	<div>
 		<form action="/board/search" method="get">
 			<select name="searchtype">
@@ -44,24 +48,34 @@
 				<img alt="" src="/resources/upload/${bDTO.b_filename}">
 			</td>
 			<td>
-				<c:if test="${sessionScope.loginById eq 'b.b_writer' and 'admin'}">
-					<a href="/board/update?b_number=${bDTO.b_number}&page=${page}">수정</a>
-				</c:if>
+				<c:choose>
+					<c:when test="${sessionScope.logId eq b.b_writer}">
+						<a href="/board/update?b_number=${b.b_number}&page=${page}">수정</a>
+					</c:when>
+					<c:otherwise>
+						-
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td>
-				<c:if test="${sessionScope.loginById eq 'b.b_writer' and 'admin'}">
-					<a href="/board/delete?b_number=${bDTO.b_number}&page=${page}">삭제</a>
-				</c:if>
+				<c:choose>
+					<c:when test="${sessionScope.logId eq b.b_writer or 'admin'}">
+						<a href="/board/delete?b_number=${b_number}&page=${page}">삭제</a>
+					</c:when>
+					<c:otherwise>
+						-
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 
 	</table>
 
-	<!-- 댓글작성 -->
+	<!-- 댓글작성 --> <!-- 댓글 작성자 id가 로그인 아이디로 표시되게 설정하기 -->
 	<div id="comment_write">
-		<input type="text" id="c_writer" placeholder="작성자"> <!-- ${sessonScope.loginById)로 괜찮을듯 -->
-		<input type="text" id="c_contents" placeholder="댓글">
-		<button id="comment_wrrite_btn">댓글 등록</button>
+		<input type="text" id="c_writer" value="${sessionScope.loginId}" readonly> 
+		<input type="text" id ="c_contents" placeholder="댓글">
+		<button id="comment_write_btn">댓글 등록</button>
 	</div>
 	
 	<!-- 댓글 목록 출력 -->
@@ -122,12 +136,18 @@
 				
 				document.getElementById("comment_list").innerHTML = output;
 				document.getElementById('c_writer').value;
-				docuement.getElemetById('c_contents').value;
+				document.getElementById('c_contents').value;
 			},
-			error: function(result) {
+			error: function() {
 				alert('정보가 없습니다.');
 			}
 		});
 	});
+	
+
+	function logout() {
+		console.log('logout 함수 호출')
+		location.href="/logout";
+	}
 </script>
 </html>

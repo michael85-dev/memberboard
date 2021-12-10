@@ -23,4 +23,10 @@ public class CommentRepository {
 		return sql.selectList("Comment.findAll", b_number);
 	}
 
+	public List<CommentDTO> count(long b_number) {
+		// TODO Auto-generated method stub
+		
+		return sql.selectList("Comment.count", b_number);
+	}
+
 }

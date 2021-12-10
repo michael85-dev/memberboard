@@ -13,6 +13,9 @@
 <body>
 	<h2>findAll.jsp</h2>
 	<h3>전체 작성 글 조회</h3>
+	로그인 아이디 : ${sessionScope.loginId}
+	<button onclick="logout()">로그아웃</button>
+
 	<div>
 		<form action="/board/search" method="get">
 			<select name="searchtype">
@@ -30,36 +33,65 @@
 			<th>제목</th>
 			<th>보기</th>
 			<th>조회수</th>
+			<th>댓글수</th>
 			<th>작성시간</th>
 			<th>파일여부</th>
 			<th>수정</th>
 			<th>삭제</th>
+			<th>현재</th>
 		</tr>
-		<c:if test="${sessionScope.loginById ne null}">
-		<c:forEach items="${bList}" var="b">
-		<tr>
-			<td>${b.b_number}</td>
-			<td>${b.b_writer}</td>
-			<td>${b.b_title}</td>
-			<td>
-				<a href="/board/detail?b_number=${b_number}">보기</a>
-			</td>
-			<td>${b.b_hits}</td>
-			<td>${b.b_date}</td>
-			<td>${b.b_filename}</td>
-			<td>
-				<c:if test="${sessionScope.loginById eq 'b.b_writer' and 'admin'}">
-					<a href="/board/update?b_number=${b_number}&page=${page}">수정</a>
-				</c:if>
-			</td>
-			<td>
-				<c:if test="${sessionScope.loginById eq 'b.b_writer' and 'admin'}">
-					<a href="/board/delete?b_number=${b_number}&page=${page}">삭제</a>
-				</c:if>
-			</td>
-		</tr>
-		</c:forEach>
-		</c:if>
+		<c:choose>
+		<c:when test="${sessionScope.loginId ne null}">
+			<c:forEach items="${bList}" var="b">
+				<tr>
+					<td>${b.b_number}</td>
+					<td>${b.b_writer}</td>
+					<td>${b.b_title}</td>
+					<td>
+						<a href="/board/detail?b_number=${b.b_number}">보기</a>
+					</td>
+					<td>${b.b_hits}</td>
+					<td>${cList}</td>
+					<td>${b.b_date}</td>
+					<td>${b.b_filename}</td>
+					<td>
+						<c:choose>
+							<c:when test="${sessionScope.loginId eq b.b_writer}">
+								<a href="/board/update?b_number=${b.b_number}&page=${page}">수정</a>
+							</c:when>
+							<c:otherwise>
+								-
+							</c:otherwise>
+						</c:choose>
+					</td>
+					<td>
+						<c:choose>
+							<c:when test="${sessionScope.loginId eq b.b_writer or 'admin'}">
+								<a href="/board/delete?b_number=${b_number}&page=${page}">삭제</a>
+							</c:when>
+							<c:otherwise>
+								-
+							</c:otherwise>
+						</c:choose>
+					</td>
+					<td>
+						${b.b_writer}
+					</td>
+				</tr>
+			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<td>--</td>
+			<td>--</td>
+			<td>--</td>
+			<td>--</td>
+			<td>--</td>
+			<td>--</td>
+			<td>--</td>
+			<td>--</td>
+			<td>--</td>
+		</c:otherwise>
+		</c:choose>
 	</table>
 	
 	<!-- 페이지 번호를 뿌려주는 코드 -->
@@ -93,9 +125,16 @@
 		</c:choose>
 	</div>
 	
-	<c:if test="${sessionScope.loginById eq 'admin'}">
-	<div class="detail-view"></div>
+	<c:if test="${sessionScope.loginById eq admin}">
+		<div class="detail-view"></div>
 	</c:if>
 	
 </body>
+<script>
+	console.log('${cList}');
+	function logout() {
+		console.log('logout 함수 호출')
+		location.href="/logout";
+	}
+</script>
 </html>

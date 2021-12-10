@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>main.jsp</h2>
-	<a href="/board/findAll">게시글 목록 조회</a>
-	<c:if test="${sessionScope.loginById eq 'admin'}">   
-	   <a href="/member/findMember">회원목록조회</a>
-   </c:if>
-   
-   
+	<h2>Board.main.jsp</h2>
+	로그인 아이디 : ${sessionScope.loginId} 
+	<button onclick="logout()">로그아웃</button> <br>
+	<a href="/member/updateform">회원 정보 수정</a> <br>
+	<a href="/board/saveform">새 글 작성</a>
+	<a href="/board/findAll">전체 게시글 보기</a>
 </body>
 </html>

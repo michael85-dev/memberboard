@@ -48,6 +48,8 @@
 </head>
 <body>
 	<h2>회원목록(findMember.jsp)</h2>
+	로그인 아이디 : ${sessionScope.loginId} 
+	<button onclick="logout()">로그아웃</button> <br>
 	<table class="table table-dark">
 		<tr>
 			<th>회원번호</th>
@@ -61,13 +63,19 @@
 			<th>수정</th>
 			<th>삭제</th>
 		</tr>
-		<tr>
-			<c:forEach items="${mList}" var="m">
+
+		<c:forEach items="${mList}" var="m">
+			<tr>
 				<td>${m.m_number}</td>
 				<td>${m.m_id}</td>
-				<c:if test="${sessionScope.loginById eq 'admin'}"> 
-				<td>${m.m_password}</td>
-				</c:if>
+				<c:choose>
+					<c:when test="${sessionScope.loginId eq 'admin' or m.m_id}"> 
+						<td>${m.m_password}</td>
+					</c:when>
+					<c:otherwise>
+						비공개
+					</c:otherwise>
+				</c:choose>
 				<td>${m.m_name}</td>
 				<td>${m.m_email}</td>
 				<td>${m.m_phone}</td>
@@ -78,17 +86,28 @@
 					<button onclick="detailAjax('${m.m_number}')">조회</button>
 				</td>
 				<td>
-					<c:if test="${sessionScope.loginById eq 'admin'}"> 
-					<a href="/member/updateform">수정</a>
-					</c:if>
+					<c:choose>
+						<c:when test="${sessionScope.loginId eq 'admin' or m.m_id}"> 
+							<a href="/member/updateform">수정</a>
+						</c:when>
+						<c:otherwise>
+							-
+						</c:otherwise>
+					</c:choose>
 				</td>
 				<td>
-					<c:if test="${sessionScope.loginById eq 'admin'}"> 
-					<a href="/member/delete">삭제</a>
-					</c:if>
+					<c:choose>
+						<c:when test="${sessionScope.loginById eq admin}"> 
+							<a href="/member/delete">삭제</a>
+						</c:when>
+						<c:otherwise>
+							-
+						</c:otherwise>
+					</c:choose>
 				</td>
-			</c:forEach>
-		</tr>
+			</tr>
+		</c:forEach>
+
 	</table>
 	
 	<div id="detail-view"></div>

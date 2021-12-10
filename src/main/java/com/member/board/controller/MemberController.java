@@ -1,6 +1,7 @@
 package com.member.board.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -30,21 +31,31 @@ public class MemberController {
 	@RequestMapping(value="insertform", method=RequestMethod.GET)
 	public String insertForm() {
 		System.out.println("회원가입 페이지 요청됨(insertform");
-		
+
 		return "member/insert";
 	}
 	
 	@RequestMapping(value="insert", method=RequestMethod.POST)
 	public String insert(@ModelAttribute MemberDTO mDTO) throws IllegalStateException, IOException {
 		System.out.println("insert 데이터 전송됨");
-		ms.insert(mDTO);	
 		
+		ms.insert(mDTO);	
+	
 		return "index";
 	}
 	
 	@RequestMapping(value="loginform", method=RequestMethod.GET)
-	public String loginForm() {
+	public String loginForm(Model model) {
 		System.out.println("login을 위한 form 요청됨");
+		
+		List<MemberDTO> mList = ms.findMember();
+
+		List<String> name = new ArrayList<String>();
+		for (int i = 0; i < mList.size(); i++) {
+			name.add(mList.get(i).getM_id());
+		}
+
+		model.addAttribute("name", name);
 		
 		return "member/login";
 	}
@@ -77,6 +88,7 @@ public class MemberController {
 	@RequestMapping(value="findMember", method=RequestMethod.GET)
 	public String findMember(Model model) {
 		List<MemberDTO> mList = ms.findMember();
+		
 		model.addAttribute("mList", mList);
 		
 		return "member/findMember";
@@ -88,4 +100,31 @@ public class MemberController {
 		
 		return result;
 	}
+	
+	/*
+	 * @RequestMapping(value="check", method=RequestMethod.POST) public
+	 * List<MemberDTO> check(@ModelAttribute MemberDTO mDTO) {
+	 * System.out.println("Member.check()" + mDTO);
+	 * 
+	 * List<MemberDTO> mList = ms.findAll(mDTO.getM_number()); // 멤버 정보 가져오기
+	 * 
+	 * return mList; }
+	 */
+	
+	@RequestMapping(value="updateform", method=RequestMethod.GET)
+	public String updateForm(@RequestParam("m_number") long m_number, Model model) {
+		MemberDTO mDTO = ms.detailAjax(m_number);
+		model.addAttribute("mDTO", mDTO);
+		
+		return "member/update";
+	}
+	
+	@RequestMapping(value="update", method=RequestMethod.POST)
+	public String update(@ModelAttribute MemberDTO mDTO) throws IllegalStateException, IOException {
+		ms.update(mDTO);
+		
+		return "redirect:/member/findMember";
+	}
+	
+
 }

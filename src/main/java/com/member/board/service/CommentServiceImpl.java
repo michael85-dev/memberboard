@@ -25,4 +25,12 @@ public class CommentServiceImpl implements CommentService {
 		return cr.findAll(b_number);
 	}
 
+	@Override
+	public List<CommentDTO> count(long b_number) {
+		// TODO Auto-generated method stub
+		System.out.println(cr.count(b_number));
+		
+		return cr.count(b_number);
+	}
+
 }
