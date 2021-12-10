@@ -88,9 +88,9 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		int bCount = br.bCount();
 		int maxPage = (int)(Math.ceil((double)bCount / PAGE_LIMIT));
-		int startPage = ((int)(Math.ceil((double)page / BLOCK_LIMIT)));
+		int startPage = (((int)(Math.ceil((double)page / BLOCK_LIMIT))) - 1);// 목록을 뿌릴때 댓글수를 가지고 오게?v;
 		
-		int endPage = startPage - BLOCK_LIMIT - 1;
+		int endPage = startPage + BLOCK_LIMIT - 1;
 		if(endPage > maxPage) {
 			endPage = maxPage;
 		}

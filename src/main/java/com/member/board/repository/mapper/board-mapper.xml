@@ -22,7 +22,7 @@
  	<update id="hits" parameterType="long">
  		update board_table set b_hits = b_hits + 1 where b_number = #{b_number}
  	</update>
- 	<select id="pagingList1" parameterType="java.util.HashMap" resultType="bDTO">
+ 	<select id="pagingList" parameterType="java.util.HashMap" resultType="bDTO">
  		select * from board_table order by b_number desc limit #{start}, #{limit}
  	</select>
  	<select id="count" resultType="int">

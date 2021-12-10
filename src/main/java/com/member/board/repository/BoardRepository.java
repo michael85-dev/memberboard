@@ -51,7 +51,7 @@ public class BoardRepository {
 
 	public List<BoardDTO> pagingList1(Map<String, Integer> pagingParam) {
 		// TODO Auto-generated method stub
-		return sql.selectList("Board.pagingList1", pagingParam);
+		return sql.selectList("Board.pagingList", pagingParam);
 	}
 
 	public List<BoardDTO> search(Map<String, String> searchParam) {

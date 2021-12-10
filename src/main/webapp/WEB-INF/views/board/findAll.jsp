@@ -66,7 +66,7 @@
 					</td>
 					<td>
 						<c:choose>
-							<c:when test="${sessionScope.loginId eq b.b_writer or 'admin'}">
+							<c:when test="${sessionScope.loginId eq b.b_writer and 'admin'}">
 								<a href="/board/delete?b_number=${b_number}&page=${page}">삭제</a>
 							</c:when>
 							<c:otherwise>
@@ -101,7 +101,7 @@
 				[이전]&nbsp;
 			</c:when>
 			<c:otherwise> <!-- 현재 페이지에서 1감소한 페이지 요청하는 링크 -->
-				<a href="/board/paging?page=${paging.page-1}">[이전]</a>&nbsp;
+				<a href="/board/paging?page=${paging.page - 1}">[이전]</a>&nbsp;
 			</c:otherwise>
 		</c:choose>
 		
@@ -120,7 +120,7 @@
 				[다음]
 			</c:when>
 			<c:otherwise>
-				<a href="/board/paging?page=${apging.page+1}">[다음]</a>
+				<a href="/board/paging?page=${paging.page+1}">[다음]</a>
 			</c:otherwise>
 		</c:choose>
 	</div>

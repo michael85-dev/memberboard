@@ -14,8 +14,7 @@
 	<h2>detail.jsp</h2>
 	<h3>상세 글 조회</h3>
 	<h4>전체 작성 글 조회</h4>
-	로그인 아이디 : ${sessionScope.loginId} 
-	<button onclick="logout()">로그아웃</button> <br>
+	로그인 아이디 : ${sessionScope.loginId}
 	<a href="/board/findAll">전체 글 조회로 돌아가기</a>
 	<div>
 		<form action="/board/search" method="get">

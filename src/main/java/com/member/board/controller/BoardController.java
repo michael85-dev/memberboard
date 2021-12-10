@@ -68,7 +68,8 @@ public class BoardController {
 		model.addAttribute("bDTO", bDTO);
 		model.addAttribute("page", page);
 		
-//		@RequestParam("m_number") long m_number,  
+//		@RequestParam("m_number")
+	//	long m_number,  
 		//MemberDTO mDTO = ms.detailAjax(m_number);
 //		model.addAttribute("mDTO", mDTO);
 				
@@ -110,7 +111,7 @@ public class BoardController {
 		PageDTO pDTO = bs.paging(page);
 		List<BoardDTO> bList = bs.pagingList(page);
 		model.addAttribute("bList", bList);
-		model.addAttribute("pDTO", pDTO);
+		model.addAttribute("paging", pDTO);
 		
 		return "board/findAll";
 	}
